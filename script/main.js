@@ -1,8 +1,3 @@
-const searchbar = document.getElementById("searchbar");
-let indexBarValue = searchbar.value;
-
-console.log(indexBarValue);
-
 const generateCards = function (detail) {
   const cardContainer = document.getElementById("cards-container");
 
@@ -15,11 +10,9 @@ const generateCards = function (detail) {
        class="bd-placeholder-img card-img-top"
      />
      <div class="card-body">
-       <h5 class="card-title">Lorem Ipsum</h5>
+       <h5 class="card-title">${element.alt}</h5>
        <p class="card-text">
-         This is a wider card with supporting text below as a natural
-         lead-in to additional content. This content is a little bit
-         longer.
+         ${element.photographer}
        </p>
        <div
          class="d-flex justify-content-between align-items-center"
@@ -57,39 +50,64 @@ const generateCards = function (detail) {
         card2.classList.add("swing");
       });
     });
-
-    // SECONDARY PAGE
-
-    const secondaryBtn = document.getElementById("load-secondary");
-    secondaryBtn.addEventListener("click", function () {
-      location.assign(detail.next_page);
-    });
   });
 };
 
-fetch("https://api.pexels.com/v1/search?query=videogames", {
-  headers: {
-    Authorization: "yJLe58wdcJk7SzlU9TNot1JNebbnlGGDW6SYwRsbUFiR2C0C5DzdsWav",
-  },
-})
-  .then((res) => {
-    if (res.ok) {
-      console.log(res);
-      return res.json();
-    } else {
-      throw new Error("error");
-    }
+const primaryBtn = document.getElementById("load-primary");
+
+primaryBtn.addEventListener("click", function () {
+  const searchbar = document.getElementById("searchbar");
+  let indexBarValue = searchbar.value;
+
+  fetch("https://api.pexels.com/v1/search?query=" + indexBarValue, {
+    headers: {
+      Authorization: "yJLe58wdcJk7SzlU9TNot1JNebbnlGGDW6SYwRsbUFiR2C0C5DzdsWav",
+    },
   })
+    .then((res) => {
+      if (res.ok) {
+        console.log(res);
+        return res.json();
+      } else {
+        throw new Error("error");
+      }
+    })
 
-  .then((detail) => {
-    console.log(detail);
-
-    const primaryBtn = document.getElementById("load-primary");
-    primaryBtn.addEventListener("click", function () {
+    .then((detail) => {
+      console.log(detail);
       generateCards(detail);
-    });
-  })
+    })
 
-  .catch((err) => {
-    alert(err);
-  });
+    .catch((err) => {
+      alert(err);
+    });
+});
+
+const secondaryBtn = document.getElementById("load-secondary");
+secondaryBtn.addEventListener("click", function () {
+  const searchbar = document.getElementById("searchbar");
+  let indexBarValue = searchbar.value;
+
+  fetch("https://api.pexels.com/v1/search/?page=2&query=" + indexBarValue, {
+    headers: {
+      Authorization: "yJLe58wdcJk7SzlU9TNot1JNebbnlGGDW6SYwRsbUFiR2C0C5DzdsWav",
+    },
+  })
+    .then((res) => {
+      if (res.ok) {
+        console.log(res);
+        return res.json();
+      } else {
+        throw new Error("error");
+      }
+    })
+
+    .then((detail) => {
+      console.log(detail);
+      generateCards(detail);
+    })
+
+    .catch((err) => {
+      alert(err);
+    });
+});
