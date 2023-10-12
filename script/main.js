@@ -3,6 +3,7 @@ const generateCards = function (detail) {
 
   detail.photos.forEach((element) => {
     const card = document.createElement("div");
+    card.classList.add("col");
     card.innerHTML = `<div class="col">
    <div class="card mb-4 shadow-sm">
      <img
@@ -18,12 +19,13 @@ const generateCards = function (detail) {
          class="d-flex justify-content-between align-items-center"
        >
          <div class="btn-group">
-           <button
-             type="button"
+           <a       
              class="btn btn-sm btn-outline-secondary"
+             id="view"
+             href="./details.html?eventid=${element.id}"
            >
              View
-           </button>
+           </a>
            <button
              
              class="btn btn-sm btn-outline-secondary hideBtn"
@@ -35,10 +37,7 @@ const generateCards = function (detail) {
        </div>
      </div>
    </div>
- </div>
-   
-   
-   `;
+ </div>`;
 
     cardContainer.appendChild(card);
 
